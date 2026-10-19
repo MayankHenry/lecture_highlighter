@@ -28,9 +28,14 @@ def _ask(prompt: str):
         api_key=config.LLM_API_KEY,
         base_url=config.LLM_BASE_URL or None,
         temperature=0.2,
+        timeout=120,
+        max_retries=2,
     )
-    text = llm.invoke(prompt).content
-    return json.loads(re.sub(r"```(?:json)?", "", text).strip())
+    text = llm.invoke(prompt).content or ""
+    text = re.sub(r"<think>.*?</think>", "", text, flags=re.S)
+    text = re.sub(r"```(?:json)?", "", text)
+    match = re.search(r"(\[.*\]|\{.*\})", text, flags=re.S)
+    return json.loads(match.group(1))
 
 
 def split_transcript(state: State):
