@@ -16,9 +16,10 @@ export default function Home() {
   const [title, setTitle] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
-    listLectures().then(setLectures).catch(() => {});
+    listLectures().then(setLectures).catch((err) => setLoadError(err.message));
   }, []);
 
   async function submit(e) {
@@ -57,7 +58,9 @@ export default function Home() {
 
       <section className="recent">
         <h2>Your lectures</h2>
-        {lectures.length === 0 ? (
+        {loadError ? (
+          <p className="error" role="alert">{loadError}</p>
+        ) : lectures.length === 0 ? (
           <p className="muted">Nothing here yet. Upload your first lecture above.</p>
         ) : (
           <ul>
