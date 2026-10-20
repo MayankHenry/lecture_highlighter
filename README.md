@@ -24,6 +24,24 @@ npm install
 npm run dev                 # http://localhost:5173
 ```
 
+## Deploy to Render
+
+The included `render.yaml` deploys the frontend and API together as one Docker
+web service. Lecture records are stored in SQLite on a persistent disk. This
+configuration uses Render's paid Starter service and a 1 GB disk; a free
+ephemeral service would lose its database when restarted or redeployed.
+
+1. Push this repository to GitHub and create a new Blueprint on Render for it.
+2. Set the prompted `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and
+   `CLOUDINARY_API_SECRET` values in Render. `LLM_API_KEY` is optional; without
+   it, chaptering falls back to plain "Part N" chapters.
+3. Deploy the Blueprint and open the generated `onrender.com` URL.
+
+Keep these credentials in Render's environment settings, not in Git or chat.
+The deployment uses the smaller `tiny` Whisper model to limit CPU and memory
+usage; it is slower and less accurate than larger models. Keep test lectures
+small, especially when deploying under a host's upload-size limit.
+
 ## Notes
 - No `LLM_API_KEY`? It still runs with plain "Part N" chapters, so you can test the Cloudinary and Whisper steps first.
 - Cloudinary free plans cap video uploads (about 100 MB). Use 5-10 minute demo lectures.

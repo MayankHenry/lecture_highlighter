@@ -1,0 +1,9 @@
+.git
+.venv
+**/.venv
+**/node_modules
+**/dist
+**/__pycache__
+backend/.env
+backend/*.db
+backend/sample.mp4
